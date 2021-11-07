@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitter-trending
+spec:
+  selector:
+    app: twitter-tending-app
+  ports:
+  - protocol: "TCP"
+    port: 2021
+    targetPort: 2021
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-trending-app
+  labels:
+    app: twitter-trending-app
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: twitter-trending-app
+  template:
+    metadata:
+      labels:
+        app: twitter-trending-app
+    spec:
+      containers:
+      - name: twitter-trending-app
+        image: afajri/twitter-trending
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 2021
+          hostPort: 2021
+          protocol: TCP
+
